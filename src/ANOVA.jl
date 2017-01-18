@@ -39,6 +39,11 @@ type RepeatedMeasuresANOVA
 	pvalue::Float64
 end
 
+"""
+Run a two way ANOVA using `Y` as the dependent variable and `label1` and `label2` as the independent variables.
+
+	function anova{T<:Real}(Y::Array{T,1}, label1::Array, label2::Array)
+"""
 function anova{T<:Real}(Y::Array{T,1}, label1::Array, label2::Array)
 	μ = mean(Y)
 	ulabel1 = unique(label1)
