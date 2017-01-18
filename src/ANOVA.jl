@@ -1,7 +1,7 @@
 module ANOVA
 import Base.show
-
 using Distributions
+
 type TwoWayANOVA
 	SS_1::Float64
 	SS_2::Float64
@@ -26,7 +26,6 @@ function show(ii::IO, X::TwoWayANOVA)
 	println(ii,"Var 1&2\t$(round(X.SS_12,2))\t$(X.df_12)\t$(round(X.SS_12/X.df_12,2))\t$(round(X.F_12,2))\t$(round(X.pv_12,3))") 
 	println(ii,"Error\t$(round(X.SS_error,2))\t$(X.df_error)\t$(round(X.SS_error/X.df_error,2))\t\t")
 end
-
 
 type RepeatedMeasuresANOVA
 	SS_b::Float64
@@ -93,7 +92,6 @@ function ranova{T<:Real}(X::Array{T,2}, label1::Array)
 	PP = anova(Y, label, tt)
 	PP, SS_t
 end
-
 
 """
 Perform a repeated ANOVA on the data in `X`,where each 'subject` is treated with each `condition`. Thus, `condition` is repeatedly measured for each `subject`.
