@@ -78,6 +78,23 @@ function anova{T<:Real}(Y::Array{T,1}, label1::Array, label2::Array)
 	pv_12 = 1-cdf(FDist(df_12,df_error), F_12)
 	TwoWayANOVA(SS_1, SS_2, SS_12, SS_error, df_1, df_2, df_12, df_error, F_1, F_2, F_12, pv_1, pv_2, pv_12)
 end
+
+"""
+Repeated measures ANOVA. Each column in `X` is assumed to constitute a repeated measuresment of the same independent variable, while `label1` and `label2` are independent variables.T
+"""
+function ranova{T<:Real}(X::Array{T,2}, label1::Array)
+	μ = mean(X[:])
+	μ_t = mean(X,2)
+	k = size(X,2)
+	SS_t = k*sum((μ_t-μ).^2)
+	Y = X[:]
+	label = repmat(label1, 1, size(X,2))[:]
+	tt = repmat(1:size(X,2)', 1, size(X,1))'[:]
+	PP = anova(Y, label, tt)
+	PP, SS_t
+end
+
+
 """
 Perform a repeated ANOVA on the data in `X`,where each 'subject` is treated with each `condition`. Thus, `condition` is repeatedly measured for each `subject`.
 """
