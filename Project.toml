@@ -1,0 +1,9 @@
+name = "ANOVA"
+uuid = "0825541b-7374-5e1e-93bd-72e337c8a986"
+author = ["Roger Herikstad <roger.herikstad@gmail.com>"]
+version = "0.2.0"
+
+[deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
