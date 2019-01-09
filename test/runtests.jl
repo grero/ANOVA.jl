@@ -1,12 +1,11 @@
 using ANOVA
-using Base.Test
-
+using Test
 
 function test_ranova()
 	#data taken from https://statistics.laerd.com/statistical-guides/repeated-measures-anova-statistical-guide.php
 	X = [45.0, 42.0, 36.0, 39.0, 51.0, 44.0, 50.0, 42.0, 41.0, 35.0, 55.0, 49.0, 55.0, 45.0, 43.0, 40.0, 59.0, 56.0]
-	conditions = repmat(1:3',1,6)'[:]
-	subjects = repmat(1:6,1,3)[:]
+	conditions = repeat(1:3',1,6)'[:]
+	subjects = repeat(1:6,1,3)[:]
 	rr = ANOVA.ranova(X, conditions, subjects)
 	@test rr.SS_b ≈ 143.44444444444423
 	@test rr.SS_error ≈ 57.222222222222285
@@ -32,9 +31,9 @@ function test_anova()
     @test P.df_12 == 2
 end
 
-test_anova()
-test_ranova()
-
-
-
-
+@testset "ANOVA" begin
+    test_anova()
+end
+@testset "rANOVA" begin
+    test_ranova()
+end

@@ -55,17 +55,17 @@ function anova(Y::Array{T,1}, label1::Array, label2::Array) where T<:Real
 
 	μ_1 = [mean(Y[label1.==g]) for g in ulabel1]
 	μ_2 = [mean(Y[label2.==g]) for g in ulabel2]
-	n_12 =[sum((label1.==r)&(label2.==g)) for r in ulabel1, g in ulabel2]
-	μ_12 =[mean(Y[(label1.==r)&(label2.==g)]) for r in ulabel1, g in ulabel2]
-	SS_1 = first(sum(n_12,2)'*((μ_1 - μ).^2))
-	SS_2 = first(sum(n_12,1)*((μ_2 - μ).^2))
-	SS_12 = first(sum(n_12.*((μ_12 .- μ_2').^2 +(μ_12 .- μ_1).^2 - (μ_12 - μ).^2)))
-	SS_error = first(sum([sum((Y[(label1.==r)&(label2.==g)]-μ_12[ri,gi]).^2) for (ri,r) in enumerate(ulabel1), (gi,g) in enumerate(ulabel2)]))
+	n_12 =[sum((label1.==r).&(label2.==g)) for r in ulabel1, g in ulabel2]
+	μ_12 =[mean(Y[(label1.==r).&(label2.==g)]) for r in ulabel1, g in ulabel2]
+	SS_1 = first(sum(n_12,dims=2)'*((μ_1 .- μ).^2))
+	SS_2 = first(sum(n_12,dims=1)*((μ_2 .- μ).^2))
+	SS_12 = first(sum(n_12.*((μ_12 .- μ_2').^2 .+ (μ_12 .- μ_1).^2 .- (μ_12 .- μ).^2)))
+	SS_error = first(sum([sum((Y[(label1.==r).&(label2.==g)] .- μ_12[ri,gi]).^2) for (ri,r) in enumerate(ulabel1), (gi,g) in enumerate(ulabel2)]))
 
 	df_1 = n1-1
 	df_2 = n2-1
 	df_12 = df_1*df_2
-	df_error = sum(n_12-1)
+	df_error = sum(n_12 .- 1)
 	MS_1 = SS_1/df_1
 	MS_2 = SS_2/df_2
 	MS_12 = SS_12/df_12
