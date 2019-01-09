@@ -1,5 +1,6 @@
 # ANOVA
 [![Build Status](https://travis-ci.org/grero/ANOVA.jl.svg?branch=master)](https://travis-ci.org/grero/ANOVA.jl)
+[![Coverage Status](https://coveralls.io/repos/github/grero/ANOVA.jl/badge.svg)](https://coveralls.io/github/grero/ANOVA.jl)
 
 Basic two way ANOVA and repeated measures ANOVA in Julia.
 
