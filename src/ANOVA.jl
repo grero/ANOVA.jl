@@ -1,8 +1,9 @@
 module ANOVA
 import Base.show
+using Statistics
 using Distributions
 
-type TwoWayANOVA
+struct TwoWayANOVA
 	SS_1::Float64
 	SS_2::Float64
 	SS_12::Float64
@@ -27,7 +28,7 @@ function show(ii::IO, X::TwoWayANOVA)
 	println(ii,"Error\t$(round(X.SS_error,2))\t$(X.df_error)\t$(round(X.SS_error/X.df_error,2))\t\t")
 end
 
-type RepeatedMeasuresANOVA
+struct RepeatedMeasuresANOVA
 	SS_b::Float64
 	SS_error::Float64
 	MS_b::Float64
@@ -43,7 +44,7 @@ Run a two way ANOVA using `Y` as the dependent variable and `label1` and `label2
 
 	function anova{T<:Real}(Y::Array{T,1}, label1::Array, label2::Array)
 """
-function anova{T<:Real}(Y::Array{T,1}, label1::Array, label2::Array)
+function anova(Y::Array{T,1}, label1::Array, label2::Array) where T<:Real
 	μ = mean(Y)
 	ulabel1 = unique(label1)
 	sort!(ulabel1)
@@ -81,14 +82,14 @@ end
 """
 Repeated measures ANOVA. Each column in `X` is assumed to constitute a repeated measuresment of the same independent variable, while `label1` and `label2` are independent variables.T
 """
-function ranova{T<:Real}(X::Array{T,2}, label1::Array)
+function ranova(X::Array{T,2}, label1::Array) where T<:Real
 	μ = mean(X[:])
 	μ_t = mean(X,2)
 	k = size(X,2)
 	SS_t = k*sum((μ_t-μ).^2)
 	Y = X[:]
-	label = repmat(label1, 1, size(X,2))[:]
-	tt = repmat(1:size(X,2)', 1, size(X,1))'[:]
+	label = repeat(label1, 1, size(X,2))[:]
+	tt = repeat(1:size(X,2)', 1, size(X,1))'[:]
 	PP = anova(Y, label, tt)
 	PP, SS_t
 end
